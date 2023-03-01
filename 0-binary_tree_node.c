@@ -1,63 +1,25 @@
 #include "binary_trees.h"
 
 /**
- * create_tree - creates an AVL tree with recursion
+ * binary_tree_node - function that creates a binary tree node
+ * @parent: a pointer to the parent node of the node to create
+ * @value: the value to put in the new node
  *
- * @node: pointer node
- * @array: input array of integers
- * @size: size of array
- * @mode: 1 to adding on the left, 2 to adding on the right
- * Return: no return
- */
-void create_tree(avl_t **node, int *array, size_t size, int mode)
-{
-	size_t middle;
-
-	if (size == 0)
-		return;
-
-	middle = (size / 2);
-	middle = (size % 2 == 0) ? middle - 1 : middle;
-
-	if (mode == 1)
-	{
-		(*node)->left = binary_tree_node(*node, array[middle]);
-		create_tree(&((*node)->left), array, middle, 1);
-		create_tree(&((*node)->left), array + middle + 1, (size - 1 - middle), 2);
-	}
-	else
-	{
-		(*node)->right = binary_tree_node(*node, array[middle]);
-		create_tree(&((*node)->right), array, middle, 1);
-		create_tree(&((*node)->right), array + middle + 1, (size - 1 - middle), 2);
-	}
-}
-
-/**
- * sorted_array_to_avl - creates root node and calls to create_tree
+ * Return: a pointer to the new node, or NULL on failure
  *
- * @array: input array of integers
- * @size: size of array
- * Return: pointer to the root
  */
-avl_t *sorted_array_to_avl(int *array, size_t size)
+
+binary_tree_t *binary_tree_node(binary_tree_t *parent, int value)
 {
-	avl_t *root;
-	size_t middle;
+	binary_tree_t *new;
 
-	root = NULL;
-
-	if (size == 0)
+	new = malloc(sizeof(binary_tree_t));
+	if (new == NULL)
 		return (NULL);
+	new->n = value;
+	new->parent = parent;
+	new->left = NULL;
+	new->right = NULL;
 
-	middle = (size / 2);
-
-	middle = (size % 2 == 0) ? middle - 1 : middle;
-
-	root = binary_tree_node(root, array[middle]);
-
-	create_tree(&root, array, middle, 1);
-	create_tree(&root, array + middle + 1, (size - 1 - middle), 2);
-
-	return (root);
+	return (new);
 }
